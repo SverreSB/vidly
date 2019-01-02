@@ -1,0 +1,27 @@
+{
+  "name": "vidly",
+  "version": "1.0.0",
+  "description": "Movie application. Creating backend to delete, update and get movies based on generes. Will also list movies based on generes using routing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SverreSB/vidly.git"
+  },
+  "keywords": [
+    "node.js",
+    "http-request"
+  ],
+  "author": "SverreSB",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SverreSB/vidly/issues"
+  },
+  "homepage": "https://github.com/SverreSB/vidly#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "joi": "^14.3.1"
+  }
+}
