@@ -30,6 +30,20 @@ app.get('/api/genres/', (req, res) =>{
    res.send(movies);
 });
 
+app.get('/api/genres/:genre', function(req, res){
+   var genreInput = req.params.genre;
+   const genreMovies = [];
+   movies.forEach(movie => {
+      if(movie.genre.toLowerCase() === genreInput.toLowerCase()){
+         genreMovies.push(movie);
+      }
+   });
+
+
+   if(!genreMovies) res.status(404).send("Error, no movies in that genre");
+   res.send(genreMovies);
+});
+
 
 /*************************
  * This simulates which port we are communication on. 
