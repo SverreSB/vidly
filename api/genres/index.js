@@ -32,12 +32,13 @@ app.get('/api/genres', (req, res) =>{
 /**
  * Post request on rout api/genres
       Requires a name of genre of minimum 2 chars. 
-      Requires a description of type string of max 512 chars.
+      Description can have max 512 chars
+      If you add no description then the description will be "No description"
  */
 app.post('/api/genres', (req, res) => {
    const schema = {
       name: Joi.string().min(2).required(),
-      description: Joi.string().max(512).required()
+      description: Joi.string().max(512)
    }
 
    const result = Joi.validate(req.body, schema);
@@ -48,12 +49,12 @@ app.post('/api/genres', (req, res) => {
       return;
    }
 
-   var hasDescription = hasValue(req.body.description);
-
    const genre = {
       id: genres.length +1,
       name: req.body.name,
-      description: req.body.description
+      description: getDescription(req.body.description)
+      
+      
    }
    genres.push(genre);
    res.send(genre);
@@ -119,7 +120,11 @@ function createID(genre){
    return id;
 }
 
-function hasValue(value){
+function getDescription(description){
    
-   //console.log("Under Construction");
+   if(description){
+      return description;
+   }else{
+      return "No description";
+   }
 }
