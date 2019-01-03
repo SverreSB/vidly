@@ -15,6 +15,9 @@ app.use(express.json());
 
 const genres = [
    {id: 1, name: "Drama", description: "No Description"},
+   {id: 2, name: "Action", description: "No Description"},
+   {id: 3, name: "Horror", description: "No Description"},
+   {id: 4, name: "Comedy", description: "No Description"},
 ]
 
 app.get('/', (req, res) =>{
@@ -45,41 +48,60 @@ app.post('/api/genres', (req, res) => {
 
    if(result.error){
       res.status(400).send(result.error.details[0].message);
+      return;
+   }
 
+   var structuredInput = structureGenreName(req.body.name);
+
+
+   if(existingGenre(structuredInput)){
+      res.status(409).send('Genre already exists');
       return;
    }
 
    const genre = {
       id: genres.length +1,
-      name: req.body.name,
-      description: getDescription(req.body.description)
-      
-      
+      name: structuredInput,
+      description: getDescription(req.body.description)   
    }
    genres.push(genre);
    res.send(genre);
-
 });
 
-
-
 /**
- * Get request for route to find genres
-      Find movies based on genres. If a movies genre matches the paramater,
-      then the movie will be sent as respons to the request. 
+ * Put request, updating genres
+      This is used to update genre name
+      Having a function to structure the format of the genre string
+      Checking if genre already exists or not. 
  */
-/*app.get('/api/genres/:genre', function(req, res){
-   var genreInput = req.params.genre;
-   const genreMovies = [];
-   movies.forEach(movie => {
-      if(movie.genre.toLowerCase() === genreInput.toLowerCase()){
-         genreMovies.push(movie);
-      }
-   });
+app.put('/api/genres/:id', (req, res) => {
+   const genre = genres.find(c => c.id === parseInt(req.params.id));
+    if(!genre){
+        res.status(404).send('The genre with given ID was not found');
+    }
 
-   if(!genreMovies) res.status(404).send("Error, no movies in that genre");
-   res.send(genreMovies);
-});*/
+   const schema = {
+      name: Joi.string().min(2).required(),
+      
+   }
+
+   const result = Joi.validate(req.body, schema);
+
+   if(result.error){
+      res.status(400).send(result.error.details[0].message);
+      return;
+   }
+   
+   var structuredInput = structureGenreName(req.body.name);
+
+   if(!existingGenre(structuredInput)){
+      genre.name = structuredInput;
+      res.send(genre);
+   }else{
+      res.status(409).send('Genre already exists');
+   }
+   
+});
 
 
 /**
@@ -93,33 +115,19 @@ app.listen(port, () => console.log(`Listening to port ${port}`));
 /*************************
  
    Functions section
-      createID(genre : String) return id : String
-      hasValue(value : String) return boolean
+      hasDescription(description : String) return description : String
+      structureGenreName(name : String) return name : String
+      existingGenre(givenGenre : String) return boolean
 
  *************************/
 
 
- /**
-  * Function for creating an unique id for a movie. 
-      Format - three first letters from genre.
-             - a number greater than 100, first movie added is 100, 
-               second is 101 ...
-      
-      Example - Drama movie number 5: DRA104
-  */
-function createID(genre){
-   var id = genre.substring(0, 3).toUpperCase();
-   var counter = 100;
-   for(var i = 0; i < movies.length; i++){
-      if(movies[i].genre == genre){
-         counter ++;
-      }
-   }
-   id += counter;
 
-   return id;
-}
-
+/**
+ * Function for returning a description
+      Function is created to be used when description isn't given,
+      so that we can return "No description" as new description.
+ */
 function getDescription(description){
    
    if(description){
@@ -127,4 +135,28 @@ function getDescription(description){
    }else{
       return "No description";
    }
+}
+
+/**
+ * Function for changing the format on genre
+      Format is upper case on first letter in string and the rest lower case
+      There are noe whitespaces for genre. Use "-" or CamelCase if genre has spacing. 
+ */
+function structureGenreName(name){
+   name = name.replace(/\s+/g,'');
+
+   return `${name.substring(0, 1).toUpperCase()}${name.toLowerCase().substring(1, name.length)}`;
+}
+
+/**
+ * Function for checking if genre exist in arraylist. 
+      If genre exist, then the function will return false, else it will return false. 
+ */
+function existingGenre(givenGenre){
+   for(var i = 0; i < genres.length; i++){
+      if(genres[i].name === givenGenre){
+         return true;
+      }
+   }
+   return false;
 }
