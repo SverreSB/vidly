@@ -75,7 +75,7 @@ app.post('/api/genres', (req, res) => {
       Checking if genre already exists or not. 
  */
 app.put('/api/genres/:id', (req, res) => {
-   const genre = genres.find(c => c.id === parseInt(req.params.id));
+   const genre = findGenreByID(req.params.id)//genres.find(c => c.id === parseInt(req.params.id));
     if(!genre){
         res.status(404).send('The genre with given ID was not found');
     }
@@ -103,6 +103,23 @@ app.put('/api/genres/:id', (req, res) => {
    
 });
 
+/**
+ * Delete request, deleting genre by id
+      Finding genre by id, if the genre does not exist, then the module returns 404 error
+      Else it responds with the deleted genre. 
+ */
+app.delete('/api/genres/:id', (req, res) => {
+   var genre = findGenreByID(req.params.id);
+
+   if(!genre) return res.status(404).send("Error, genre does not exist");
+
+   const index = genres.indexOf(genre);
+   genres.splice(index, 1);
+
+   res.send(genre);
+
+});
+
 
 /**
  * This simulates which port we are communication on. 
@@ -118,6 +135,7 @@ app.listen(port, () => console.log(`Listening to port ${port}`));
       hasDescription(description : String) return description : String
       structureGenreName(name : String) return name : String
       existingGenre(givenGenre : String) return boolean
+      findGenreByID(id : String) return genre : Object(genres)
 
  *************************/
 
@@ -150,7 +168,7 @@ function structureGenreName(name){
 
 /**
  * Function for checking if genre exist in arraylist. 
-      If genre exist, then the function will return false, else it will return false. 
+      If genre exist, then the function will return true, else it will return false. 
  */
 function existingGenre(givenGenre){
    for(var i = 0; i < genres.length; i++){
@@ -159,4 +177,14 @@ function existingGenre(givenGenre){
       }
    }
    return false;
+}
+
+/**
+ * Function for finding genre by passing in id
+      Returns genre object that is found in array genres.
+      If not found the object will be empty. 
+ 
+ */
+function findGenreByID(id){
+   return genres.find(c => c.id === parseInt(id));
 }
