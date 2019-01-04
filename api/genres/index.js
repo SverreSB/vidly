@@ -69,6 +69,19 @@ app.post('/api/genres', (req, res) => {
 });
 
 /**
+ * Get request, finding genres on id
+      Finding genres based on id given in parameter, responds with genre object.
+ */
+app.get('/api/genres/:id', (req, res) => {
+   const genre = findGenreByID(req.params.id);
+
+   if(!genre) return res.status(404).send('The genre with given ID was not found');
+
+   res.send(genre);
+
+});
+
+/**
  * Put request, updating genres
       This is used to update genre name
       Having a function to structure the format of the genre string
@@ -76,9 +89,8 @@ app.post('/api/genres', (req, res) => {
  */
 app.put('/api/genres/:id', (req, res) => {
    const genre = findGenreByID(req.params.id)//genres.find(c => c.id === parseInt(req.params.id));
-    if(!genre){
-        res.status(404).send('The genre with given ID was not found');
-    }
+    if(!genre) return res.status(404).send('The genre with given ID was not found');
+    
 
    const schema = {
       name: Joi.string().min(2).required(),
@@ -87,10 +99,9 @@ app.put('/api/genres/:id', (req, res) => {
 
    const result = Joi.validate(req.body, schema);
 
-   if(result.error){
-      res.status(400).send(result.error.details[0].message);
-      return;
-   }
+   if(result.error) return res.status(400).send(result.error.details[0].message);
+
+   
    
    var structuredInput = structureGenreName(req.body.name);
 
@@ -105,7 +116,7 @@ app.put('/api/genres/:id', (req, res) => {
 
 /**
  * Delete request, deleting genre by id
-      Finding genre by id, if the genre does not exist, then the module returns 404 error
+      Finding genre by id, if the genre does not exist, then the route handler returns 404 error
       Else it responds with the deleted genre. 
  */
 app.delete('/api/genres/:id', (req, res) => {
