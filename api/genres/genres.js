@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
+
 //Connecting to mongoose database
 mongoose.connect("mongodb://localhost:27017/api-genres", { useNewUrlParser: true })
    .then(() => console.log('Connected to mongodb'))
@@ -21,7 +22,8 @@ const genreSchema = new mongoose.Schema ({
        type: String,
        required: true,
        minlength: 2,
-       maxlength: 64
+	   maxlength: 64,
+	   trim: true
     },
     description: {
        type: String,
@@ -79,8 +81,8 @@ router.post('/', (req, res) => {
   * Get request, finding genres on id
        Finding genres based on id given in parameter, responds with genre object.
   */
-router.get('/:id', (req, res) => {
-    const genre = findGenreByID(req.params.id);
+router.get('/:id', async (req, res) => {
+    const genre = await Genre.findById(req.params.id);
  
     if(!genre) return res.status(404).send('The genre with given ID was not found');
  
@@ -181,11 +183,10 @@ function structureGenreName(name){
   * Function for checking if genre exist in arraylist. 
        If genre exist, then the function will return true, else it will return false. 
   */
-function existingGenre(givenGenre){
-	const genres = new Genre
-		.find()
-		.select({name: 1});
-	
+async function existingGenre(givenGenre){
+	const genres = await getGenreFromDB();
+	console.log(genres[0].name);
+
     /*for(var i = 0; i < genres.length; i++){
        if(genres[i].name === givenGenre){
           return true;
@@ -203,6 +204,8 @@ function existingGenre(givenGenre){
 function findGenreByID(id){
     return genres.find(c => c.id === parseInt(id));
 }
+
+
 
 
 
