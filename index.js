@@ -12,16 +12,21 @@ const Joi = require('joi');
 const express = require('express');
 const app = express();
 const genres = require('./api/genres/genres');
+const customers = require('./api/customers/customers');
 
 app.use(express.json());
 app.use('/api/genres', genres);
+app.use('/api/customers', customers);
 
+
+//Connecting to mongoose database
+mongoose.connect("mongodb://localhost:27017/api-genres", { useNewUrlParser: true })
+   .then(() => console.log('Connected to mongodb'))
+   .catch(err => console.error('Could not connect to mongodb', err));
 
 app.get('/', (req, res) =>{
    res.send('Check /api/genres/');
 });
-
-
 
 /**
  * This simulates which port we are communication on. 

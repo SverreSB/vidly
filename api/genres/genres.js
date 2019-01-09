@@ -5,9 +5,7 @@ const mongoose = require('mongoose');
 
 
 //Connecting to mongoose database
-mongoose.connect("mongodb://localhost:27017/api-genres", { useNewUrlParser: true })
-   .then(() => console.log('Connected to mongodb'))
-   .catch(err => console.error('Could not connect to mongodb', err));//replace console.log with debugger
+
 
 /*const genres = [
     {id: 1, name: "Drama", description: "No Description"},
