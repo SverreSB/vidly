@@ -94,32 +94,27 @@ router.get('/:id', async (req, res) => {
   * Put request, updating genres
        This is used to update genre name
        Having a function to structure the format of the genre string
-       Checking if genre already exists or not. 
   */
-router.put('/:id', (req, res) => {
-    const genre = findGenreByID(req.params.id)//genres.find(c => c.id === parseInt(req.params.id));
-     if(!genre) return res.status(404).send('The genre with given ID was not found');
-     
- 
+router.put('/:id', async (req, res) => {
     const schema = {
-       name: Joi.string().min(2).required(),
-       
+       name: Joi.string().min(2).required(), 
     }
  
     const result = Joi.validate(req.body, schema);
  
     if(result.error) return res.status(400).send(result.error.details[0].message);
- 
     
+	var structuredInput = structureGenreName(req.body.name);
+	//I should change findByIdAndUpdate
+	const genre = await Genre.findByIdAndUpdate(req.params.id, { name: structuredInput}, {
+		new: true
+	});
+    if(!genre) return res.status(404).send('The genre with given ID was not found');
+	
+
     
-    var structuredInput = structureGenreName(req.body.name);
- 
-    if(!existingGenre(structuredInput)){
-       genre.name = structuredInput;
-       res.send(genre);
-    }else{
-       res.status(409).send('Genre already exists');
-    }
+    res.send(genre);
+   
     
 });
  
