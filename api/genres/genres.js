@@ -105,7 +105,7 @@ router.put('/:id', async (req, res) => {
     if(result.error) return res.status(400).send(result.error.details[0].message);
     
 	var structuredInput = structureGenreName(req.body.name);
-	//I should change findByIdAndUpdate
+	//I should change findByIdAndUpdate because it gives a warning
 	const genre = await Genre.findByIdAndUpdate(req.params.id, { name: structuredInput}, {
 		new: true
 	});
@@ -120,23 +120,17 @@ router.put('/:id', async (req, res) => {
  
  /**
   * Delete request, deleting genre by id
-       Finding genre by id, if the genre does not exist, then the route handler returns 404 error
-       Else it responds with the deleted genre. 
+	   Checks if given ID exists, if not then an error will appear.
+	   If ID exists the the genre is deleted.
   */
-router.delete('/:id', (req, res) => {
-    var genre = findGenreByID(req.params.id);
- 
+router.delete('/:id', async (req, res) => {
+    const genre = await Genre.findById(req.params.id);
     if(!genre) return res.status(404).send("Error, genre does not exist");
  
-    const index = genres.indexOf(genre);
-    genres.splice(index, 1);
- 
-    res.send(genre);
+	res.send(genre);
+	genre.delete();
  
 });
-
-
-
 
  /*************************
  
@@ -196,9 +190,10 @@ async function existingGenre(givenGenre){
        If not found the object will be empty. 
   
   */
-function findGenreByID(id){
-    return genres.find(c => c.id === parseInt(id));
-}
+/*function findGenreByID(id){
+	return genres.find(c => c.id === parseInt(id));
+	
+}*/
 
 
 
