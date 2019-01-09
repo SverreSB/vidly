@@ -126,7 +126,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     const genre = await Genre.findById(req.params.id);
     if(!genre) return res.status(404).send("Error, genre does not exist");
- 
+	
 	res.send(genre);
 	genre.delete();
  
@@ -137,8 +137,8 @@ router.delete('/:id', async (req, res) => {
    Functions section
       hasDescription(description : String) return description : String
       structureGenreName(name : String) return name : String
-      existingGenre(givenGenre : String) return boolean
-      findGenreByID(id : String) return genre : Object(genres)
+      //existingGenre(givenGenre : String) return boolean
+      
 
  *************************/
 
@@ -172,30 +172,17 @@ function structureGenreName(name){
   * Function for checking if genre exist in arraylist. 
        If genre exist, then the function will return true, else it will return false. 
   */
-async function existingGenre(givenGenre){
+/*async function existingGenre(givenGenre){
 	const genres = await getGenreFromDB();
 	console.log(genres[0].name);
 
-    /*for(var i = 0; i < genres.length; i++){
+    for(var i = 0; i < genres.length; i++){
        if(genres[i].name === givenGenre){
           return true;
        }
-    }*/
+    }
     return false;
-}
- 
- /**
-  * Function for finding genre by passing in id
-       Returns genre object that is found in array genres.
-       If not found the object will be empty. 
-  
-  */
-/*function findGenreByID(id){
-	return genres.find(c => c.id === parseInt(id));
-	
 }*/
-
-
 
 
 
