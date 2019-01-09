@@ -1,11 +1,13 @@
 /*************************
  
    Requireing modules to use for application.
+      mongoose - Used for storing data in db
       Joi - Used for validating input
       express - Used for http requests; get, put, delete...
       genres - Used for route handling at api/genres
 
  *************************/
+const mongoose = require('mongoose');
 const Joi = require('joi');
 const express = require('express');
 const app = express();

@@ -1,21 +1,44 @@
 const Joi = require('joi');
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
-const genres = [
+//Connecting to mongoose database
+mongoose.connect("mongodb://localhost:27017/api-genres", { useNewUrlParser: true })
+   .then(() => console.log('Connected to mongodb'))
+   .catch(err => console.error('Could not connect to mongodb', err));//replace console.log with debugger
+
+/*const genres = [
     {id: 1, name: "Drama", description: "No Description"},
     {id: 2, name: "Action", description: "No Description"},
     {id: 3, name: "Horror", description: "No Description"},
     {id: 4, name: "Comedy", description: "No Description"},
- ]
+ ]*/
+
+//Schema for Genre object that is going to be used to retrive and write to db. 
+const genreSchema = new mongoose.Schema ({
+    name: {
+       type: String,
+       required: true,
+       minlength: 2,
+       maxlength: 64
+    },
+    description: {
+       type: String,
+       maxlength: 512
+    }
+}); 
+
+const Genre = mongoose.model('Genre', genreSchema);
 
 /** 
  * Get request on route /api/generes
       Responds by sending array of genre objects.    
  */
-router.get('/', (req, res) =>{
+router.get('/', async (req, res) =>{
+	const genres = await Genre.find();
     res.send(genres);
- });
+});
  
  /**
   * Post request on rout api/genres
@@ -23,9 +46,9 @@ router.get('/', (req, res) =>{
        Description can have max 512 chars
        If you add no description then the description will be "No description"
   */
- router.post('/', (req, res) => {
+router.post('/', (req, res) => {
     const schema = {
-       name: Joi.string().min(2).required(),
+       name: Joi.string().min(2).max(64).required(),
        description: Joi.string().max(512)
     }
  
@@ -51,20 +74,20 @@ router.get('/', (req, res) =>{
     }
     genres.push(genre);
     res.send(genre);
- });
+});
  
  /**
   * Get request, finding genres on id
        Finding genres based on id given in parameter, responds with genre object.
   */
- router.get('/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const genre = findGenreByID(req.params.id);
  
     if(!genre) return res.status(404).send('The genre with given ID was not found');
  
     res.send(genre);
  
- });
+});
  
  /**
   * Put request, updating genres
@@ -72,7 +95,7 @@ router.get('/', (req, res) =>{
        Having a function to structure the format of the genre string
        Checking if genre already exists or not. 
   */
- router.put('/:id', (req, res) => {
+router.put('/:id', (req, res) => {
     const genre = findGenreByID(req.params.id)//genres.find(c => c.id === parseInt(req.params.id));
      if(!genre) return res.status(404).send('The genre with given ID was not found');
      
@@ -97,14 +120,14 @@ router.get('/', (req, res) =>{
        res.status(409).send('Genre already exists');
     }
     
- });
+});
  
  /**
   * Delete request, deleting genre by id
        Finding genre by id, if the genre does not exist, then the route handler returns 404 error
        Else it responds with the deleted genre. 
   */
- router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     var genre = findGenreByID(req.params.id);
  
     if(!genre) return res.status(404).send("Error, genre does not exist");
@@ -114,7 +137,7 @@ router.get('/', (req, res) =>{
  
     res.send(genre);
  
- });
+});
 
 
 
@@ -150,23 +173,23 @@ function getDescription(description){
        Format is upper case on first letter in string and the rest lower case
        There are noe whitespaces for genre. Use "-" or CamelCase if genre has spacing. 
   */
- function structureGenreName(name){
+function structureGenreName(name){
     name = name.replace(/\s+/g,'');
     return `${name.substring(0, 1).toUpperCase()}${name.toLowerCase().substring(1, name.length)}`;
- }
+}
  
  /**
   * Function for checking if genre exist in arraylist. 
        If genre exist, then the function will return true, else it will return false. 
   */
- function existingGenre(givenGenre){
+function existingGenre(givenGenre){
     for(var i = 0; i < genres.length; i++){
        if(genres[i].name === givenGenre){
           return true;
        }
     }
     return false;
- }
+}
  
  /**
   * Function for finding genre by passing in id
@@ -174,9 +197,11 @@ function getDescription(description){
        If not found the object will be empty. 
   
   */
- function findGenreByID(id){
+function findGenreByID(id){
     return genres.find(c => c.id === parseInt(id));
- }
+}
+
+
 
 
 module.exports = router;
