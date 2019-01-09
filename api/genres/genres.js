@@ -62,17 +62,16 @@ router.post('/', (req, res) => {
     var structuredInput = structureGenreName(req.body.name);
  
  
-    if(existingGenre(structuredInput)){
+    /*if(existingGenre(structuredInput)){
        res.status(409).send('Genre already exists');
        return;
-    }
+    }*/
  
-    const genre = {
-       id: genres.length +1,
+    const genre = new Genre({
        name: structuredInput,
        description: getDescription(req.body.description)   
-    }
-    genres.push(genre);
+    });
+    genre.save();
     res.send(genre);
 });
  
@@ -183,11 +182,15 @@ function structureGenreName(name){
        If genre exist, then the function will return true, else it will return false. 
   */
 function existingGenre(givenGenre){
-    for(var i = 0; i < genres.length; i++){
+	const genres = new Genre
+		.find()
+		.select({name: 1});
+	
+    /*for(var i = 0; i < genres.length; i++){
        if(genres[i].name === givenGenre){
           return true;
        }
-    }
+    }*/
     return false;
 }
  
