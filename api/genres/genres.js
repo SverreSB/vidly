@@ -49,10 +49,7 @@ router.post('/', (req, res) => {
  
     const result = Joi.validate(req.body, schema);
  
-    if(result.error){
-       res.status(400).send(result.error.details[0].message);
-       return;
-    }
+    if(result.error) return res.status(400).send(result.error.details[0].message);
  
     var structuredInput = structureName(req.body.name);
  
@@ -63,7 +60,7 @@ router.post('/', (req, res) => {
  
     const genre = new Genre({
        name: structuredInput,
-       description: description(req.body.description)   
+       description: req.body.description
     });
     genre.save();
     res.send(genre);

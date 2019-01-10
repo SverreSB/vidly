@@ -13,6 +13,7 @@ const genreSchema = new mongoose.Schema ({
     },
     description: {
        type: String,
+       default: 'Missing description',
        maxlength: 512
     }
 });
@@ -26,7 +27,6 @@ const Genre = mongoose.model('Genre', genreSchema);
 /*************************
  
    	Functions section
-      	hasDescription(description : String) return description : String
       	structureGenreName(name : String) return name : String
       	//existingGenre(givenGenre : String) return boolean
       
@@ -36,21 +36,6 @@ const Genre = mongoose.model('Genre', genreSchema);
 
 
 
-/**
- * 	Function for returning a description
-      	Function is created to be used when description isn't given,
-      	so that we can return "No description" as new description.
- */
-function getDescription(description){
-   
-    if(description){
-       return description;
-    }else{
-       return "No description";
-    }
-}
-
- 
 /**
  * 	Function for changing the format on genre
        	Format is upper case on first letter in string and the rest lower case
@@ -87,5 +72,4 @@ function structureGenreName(name){
 
 
 exports.Genre = Genre;
-exports.description = getDescription;
 exports.structureName = structureGenreName;

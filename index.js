@@ -25,15 +25,17 @@ const express = require('express');
 const app = express();
 const genres = require('./api/genres/genres');
 const customers = require('./api/customers/customers');
+const movies = require('./api/movies/movies');
 
 
 app.use(express.json());
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);
+app.use('/api/movies', movies);
 
 
 //Connecting to mongoose database
-mongoose.connect("mongodb://localhost:27017/api-genres", { useNewUrlParser: true })
+mongoose.connect("mongodb://localhost:27017/vidly", { useNewUrlParser: true })
    .then(() => console.log('Connected to mongodb'))
    .catch(err => console.error('Could not connect to mongodb', err));
 

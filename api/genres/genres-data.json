@@ -1,3 +1,15 @@
 [
-    {"_id":"5a68fdc3615eda645bc6bdec", "name":"Comedy", "description": "Comedy is a movie genre based on humour", "__v": 0}
+    {"title":"Action", "description": "Missing description", "__v": 0},
+    {"title":"Adventure", "description": "Missing description", "__v": 0},
+    {"title":"Comedy", "description": "Missing description", "__v": 0},
+    {"title":"Crime", "description": "Missing description", "__v": 0},
+    {"title":"Drama", "description": "Missing description", "__v": 0},
+    {"title":"Fantasy", "description": "Missing description", "__v": 0},
+    {"title":"Horror", "description": "Missing description", "__v": 0},
+    {"title":"Mystery", "description": "Missing description", "__v": 0},
+    {"title":"Romance", "description": "Missing description", "__v": 0},
+    {"title":"Satire", "description": "Missing description", "__v": 0},
+    {"title":"Science Ficiton", "description": "Missing description", "__v": 0},
+    {"title":"Thriller", "description": "Missing description", "__v": 0},
+    {"title":"Western", "description": "Missing description", "__v": 0}
 ]
