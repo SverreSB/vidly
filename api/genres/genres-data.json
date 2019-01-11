@@ -1,15 +1,15 @@
 [
-    {"title":"Action", "description": "Missing description", "__v": 0},
-    {"title":"Adventure", "description": "Missing description", "__v": 0},
-    {"title":"Comedy", "description": "Missing description", "__v": 0},
-    {"title":"Crime", "description": "Missing description", "__v": 0},
-    {"title":"Drama", "description": "Missing description", "__v": 0},
-    {"title":"Fantasy", "description": "Missing description", "__v": 0},
-    {"title":"Horror", "description": "Missing description", "__v": 0},
-    {"title":"Mystery", "description": "Missing description", "__v": 0},
-    {"title":"Romance", "description": "Missing description", "__v": 0},
-    {"title":"Satire", "description": "Missing description", "__v": 0},
-    {"title":"Science Ficiton", "description": "Missing description", "__v": 0},
-    {"title":"Thriller", "description": "Missing description", "__v": 0},
-    {"title":"Western", "description": "Missing description", "__v": 0}
+    {"name":"Action", "description": "Missing description", "__v": 0},
+    {"name":"Adventure", "description": "Missing description", "__v": 0},
+    {"name":"Comedy", "description": "Missing description", "__v": 0},
+    {"name":"Crime", "description": "Missing description", "__v": 0},
+    {"name":"Drama", "description": "Missing description", "__v": 0},
+    {"name":"Fantasy", "description": "Missing description", "__v": 0},
+    {"name":"Horror", "description": "Missing description", "__v": 0},
+    {"name":"Mystery", "description": "Missing description", "__v": 0},
+    {"name":"Romance", "description": "Missing description", "__v": 0},
+    {"name":"Satire", "description": "Missing description", "__v": 0},
+    {"name":"Science Ficiton", "description": "Missing description", "__v": 0},
+    {"name":"Thriller", "description": "Missing description", "__v": 0},
+    {"name":"Western", "description": "Missing description", "__v": 0}
 ]

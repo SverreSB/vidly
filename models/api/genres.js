@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 
 //Schema for Genre object that is going to be used to retrive and write to db. 
-const genreSchema = new mongoose.Schema ({
+const schema = new mongoose.Schema ({
     name: {
        type: String,
        required: true,
@@ -19,7 +19,7 @@ const genreSchema = new mongoose.Schema ({
 });
 
 
-const Genre = mongoose.model('Genre', genreSchema);
+const Genre = mongoose.model('Genre', schema);
 
 
 
@@ -73,3 +73,4 @@ function structureGenreName(name){
 
 exports.Genre = Genre;
 exports.structureName = structureGenreName;
+exports.genreSchema = schema;
