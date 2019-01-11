@@ -27,5 +27,29 @@ const Movie = mongoose.model('Movie', new mongoose.Schema({
 }));
 
 
+function getTitle(title, movie){
+    if(!title) return movie.title;
+    
+    return title;
+}
+
+
+function getDescription(description, movie){
+    if(!description) return movie.description;
+
+    return description;
+}
+
+
+function getAge(age, movie){
+    if(!age) return movie.age;
+
+    return age;
+}
+
+
 
 exports.Movie = Movie;
+exports.getMovieTitle = getTitle;
+exports.getMovieDescription = getDescription;
+exports.getMovieAge = getAge; 
