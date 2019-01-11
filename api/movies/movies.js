@@ -71,7 +71,7 @@ router.put('/:id', async(req, res) => {
    if(result.error) return res.status(400).send(result.error.details[0].message);
 
    const movie = await Movie.findById(req.params.id);
-   
+
    const updateMovie = await Movie.findByIdAndUpdate(req.params.id, {
       title: getMovieTitle(req.body.title, movie),
       description: getMovieDescription(req.body.description, movie),
@@ -83,6 +83,14 @@ router.put('/:id', async(req, res) => {
    res.send(updateMovie);  
  
 });
+
+router.delete('/:id', async(req, res) => {
+   const movie = await Movie.findByIdAndDelete(req.params.id);
+
+   if(!movie) return res.status(404).send('The movie with given ID was not found');
+
+   res.send(movie);
+})
 
 
 module.exports = router;
